@@ -13,20 +13,40 @@ sealed class BottomBar(
 ){
     object Home: BottomBar(
         route = "home",
-        title = "Home",
+        title = "",
         icon = Icons.Default.Home
     )
 
     object Peso: BottomBar(
         route = "peso",
-        title = "Seu Peso",
+        title = "",
         icon = Icons.Default.Face
     )
 
     object Deficit: BottomBar(
         route = "deficit",
-        title = "Deficit",
+        title = "",
         icon = Icons.Default.Person
     )
+
+    object AddAlimentos: BottomBar(
+        route = "AddAlimentos",
+        title = "",
+        icon = Icons.Default.Person
+    )
+
+    object AddAlimentosIngeridos: BottomBar(
+        route = "AddAlimentosIngeridos",
+        title = "",
+        icon = Icons.Default.Person
+    )
+
+
+    object UpdatePeso: BottomBar(
+        route = "UpdatePeso",
+        title = "",
+        icon = Icons.Default.Person
+    )
+
 
 }

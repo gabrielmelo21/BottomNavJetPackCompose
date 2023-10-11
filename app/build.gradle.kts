@@ -50,16 +50,19 @@ android {
 }
 
 dependencies {
-    val nav_version = "2.7.3"
-    implementation("androidx.navigation:navigation-compose:$nav_version")
-    val retrofit_version = "2.9.0"
-    implementation ("com.squareup.retrofit2:retrofit:$retrofit_version")
-    implementation ("com.squareup.retrofit2:converter-gson:$retrofit_version")
+    val navVersion = "2.7.3"
+    implementation("androidx.navigation:navigation-compose:$navVersion")
+    val retrofitVersion = "2.9.0"
+    implementation ("com.squareup.retrofit2:retrofit:$retrofitVersion")
+    implementation ("com.squareup.retrofit2:converter-gson:$retrofitVersion")
+    implementation ("com.squareup.okhttp3:okhttp:4.11.0")
+    implementation ("com.squareup.okhttp3:logging-interceptor:4.11.0")
 
 
     implementation ("androidx.compose.ui:ui:1.5.3")
     implementation ("androidx.compose.material:material:1.5.3")
     implementation ("androidx.activity:activity-compose:1.7.2")
+
 
 
 
