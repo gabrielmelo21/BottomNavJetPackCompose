@@ -1,31 +1,33 @@
 package com.melo.bottomnavjetpackcompose
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement.Bottom
+
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.LocalContentColor
-import androidx.compose.material.SnackbarDefaults.backgroundColor
+
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarColors
+
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
+
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
+
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -34,6 +36,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.melo.bottomnavjetpackcompose.bars.BottomBar
 import com.melo.bottomnavjetpackcompose.bars.BottomNavGraph
+
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -58,7 +61,9 @@ fun MainScreen(){
         }
         "deficit" -> {
             titleText = "Deficit"
-
+        }
+        "AddAlimentos" -> {
+            titleText= "Adicionar novo alimento"
         }
         else -> {
             // Rota desconhecida, tratamento de erro se necessário
@@ -72,9 +77,9 @@ fun MainScreen(){
         else -> Icons.Default.Add // Ícone padrão para outras rotas, se necessário
     }
 
-
  Scaffold(
      topBar = {
+
          TopAppBar(
              colors = TopAppBarDefaults.smallTopAppBarColors(
                  containerColor = MaterialTheme.colorScheme.primary,
@@ -82,15 +87,29 @@ fun MainScreen(){
                  actionIconContentColor = MaterialTheme.colorScheme.onSecondary
              ),
 
+
              title = {
                  Text(titleText, color = Color(0xFF0066ff))
              },
+
+             actions = {
+                 IconButton(
+                     onClick = {
+                         navController.navigate(BottomBar.AddAlimentos.route)
+
+                     }
+                 ) {
+                     Icon(imageVector = Icons.Default.Add, contentDescription = null)
+                 }
+             }
+
 
              )
      },
      bottomBar = { BottomB(navController = navController) },
      floatingActionButton = {
-         if(rotaAtual !== "deficit"){
+         if(rotaAtual == "home" || rotaAtual == "peso"){
+
              FloatingActionButton(onClick = {
                  navController.navigate(floatActionRoute)
              },
@@ -101,8 +120,12 @@ fun MainScreen(){
 
      },
 
+
  ){
-  BottomNavGraph(navController = navController)
+
+
+
+     BottomNavGraph(navController = navController)
 
 
  }
@@ -138,7 +161,7 @@ fun RowScope.AddItem(
 ){
     val backStackEntry by navController.currentBackStackEntryAsState()
     val rotaAtual = backStackEntry?.destination?.route ?: ""
-    var tintIcon: Color
+    val tintIcon: Color
     if (rotaAtual == screen.route){
          tintIcon = Color(0xFF0066ff)
     }else{

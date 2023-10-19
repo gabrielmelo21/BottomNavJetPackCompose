@@ -1,17 +1,12 @@
-package com.melo.bottomnavjetpackcompose.api
+package com.melo.bottomnavjetpackcompose.api.Testes
 
-import android.provider.Settings.Global
 import android.util.Log
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import com.melo.bottomnavjetpackcompose.api.API_CALLS
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.await
 import retrofit2.converter.gson.GsonConverterFactory

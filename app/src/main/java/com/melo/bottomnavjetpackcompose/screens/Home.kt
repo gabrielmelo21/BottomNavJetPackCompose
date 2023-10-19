@@ -1,73 +1,54 @@
 package com.melo.bottomnavjetpackcompose.screens
 
-import android.util.Log
-import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
-import androidx.compose.material3.DividerDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LargeFloatingActionButton
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.melo.bottomnavjetpackcompose.api.API_CALLS
-import com.melo.bottomnavjetpackcompose.api.Alimentos
-import com.melo.bottomnavjetpackcompose.api.AlimentosViewModel
-import com.melo.bottomnavjetpackcompose.api.ApiService
-import com.melo.bottomnavjetpackcompose.bars.BottomBar
-import kotlinx.coroutines.launch
-import okhttp3.internal.wait
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import com.melo.bottomnavjetpackcompose.R
+import com.melo.bottomnavjetpackcompose.api.ViewModels.AlimentosIngeridosViewModel
+import com.melo.bottomnavjetpackcompose.api.ViewModels.CaloriasViewModel
+import com.melo.bottomnavjetpackcompose.api.ViewModels.DeleteAlimentoIngerido
+import com.melo.bottomnavjetpackcompose.screens.Dialogs.AlertDialogExample
+import java.lang.Integer.parseInt
 
 
 @Composable
@@ -90,17 +71,16 @@ Box(
         modifier = Modifier.fillMaxSize()
     ) {
 
+
+
         CardCaloriasDiarias()
-       val  alimentosViewModel =  AlimentosViewModel()
-        CardAlimentosIngeridos(alimentosViewModel)
+        CardAlimentosIngeridos(AlimentosIngeridosViewModel())
 
-
+    }
 
     }
     }
 
-
-}
 
 
 
@@ -112,7 +92,7 @@ fun CardCaloriasDiarias() {
         modifier = Modifier
             .padding(top = 56.dp)
             .fillMaxWidth()
-            .height(210.dp),
+            .height(250.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primary,
         ),
@@ -134,7 +114,7 @@ fun CardCaloriasDiarias() {
                 color = MaterialTheme.colorScheme.tertiary,
                 style = MaterialTheme.typography.titleLarge
             )
-            Divider(color = Color.Gray, modifier = Modifier
+            Divider(color = Color(0xFF141414), modifier = Modifier
                 .fillMaxWidth()
                 .height(1.dp))
             Text(
@@ -143,23 +123,55 @@ fun CardCaloriasDiarias() {
                 modifier = paddingModifier,
                 style = MaterialTheme.typography.labelSmall
             )
-            Text(
-                text = "500 / 1800",
-                color = Color.White,
-                style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier.padding(top = 0.dp)
-            )
 
-            Text(
-                text = "50%",
-                color = Color.White,
-                style = MaterialTheme.typography.titleSmall,
-                modifier = Modifier.padding(top = 0.dp)
-            )
-
-            ProgressBar(progress = 50)
+            val caloriasViewModel = CaloriasViewModel()
+            CaloriasScreen(caloriasViewModel)
         }
     }
+}
+
+
+@Composable
+fun CaloriasScreen(caloriasViewModel: CaloriasViewModel){
+
+    // Observa os dados do ViewModel e mantém o estado usando remember
+
+
+    val caloriasState by rememberUpdatedState(caloriasViewModel.caloriasAtual)
+    val tmbState by rememberUpdatedState(caloriasViewModel.tmb)
+
+    val calorias: Float = caloriasState.value.toFloat() ?: 0f
+    val tmb: Float = tmbState.value.toFloat() ?: 1f // Definindo tmb como 1 se a conversão falhar para evitar a divisão por zero
+
+    val porcentagem: Float = (calorias / tmb) * 100
+    val porcentagemFormatada: String = String.format("%.2f", porcentagem)
+
+
+    LaunchedEffect(true) {
+        caloriasViewModel.carregarDados()
+    }
+
+
+
+    Text(
+        text = "${caloriasState.value} / ${tmbState.value}",
+        color = Color.White,
+        style = MaterialTheme.typography.titleLarge,
+        modifier = Modifier.padding(top = 0.dp)
+    )
+    Text(
+        text = "${porcentagemFormatada}%",
+        color = Color.White,
+        style = MaterialTheme.typography.titleSmall,
+        modifier = Modifier.padding(top = 0.dp)
+    )
+
+
+
+    ProgressBar(progress = porcentagem.toInt())
+
+
+
 }
 
 @Composable
@@ -174,8 +186,25 @@ fun ProgressBar(progress: Int) {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 @Composable
-fun CardAlimentosIngeridos(alimentosViewModel: AlimentosViewModel){
+fun CardAlimentosIngeridos(alimentosViewModel: AlimentosIngeridosViewModel){
     val paddingModifier = Modifier.padding(10.dp)
     Card(
         modifier = Modifier
@@ -205,12 +234,16 @@ fun CardAlimentosIngeridos(alimentosViewModel: AlimentosViewModel){
                 color = MaterialTheme.colorScheme.tertiary,
                 style = MaterialTheme.typography.titleLarge
             )
-            Divider(color = Color.Gray, modifier = Modifier
+
+
+
+
+            Divider(color = Color(0xFF141414), modifier = Modifier
                 .fillMaxWidth()
                 .height(1.dp))
            
-         AlimentosScreen(alimentosViewModel = alimentosViewModel)
-        // LazyColumnExample()
+         AlimentosIngeridosScreen(alimentosIngeridosViewModel = alimentosViewModel)
+
 
 
         }
@@ -223,45 +256,147 @@ fun CardAlimentosIngeridos(alimentosViewModel: AlimentosViewModel){
 
 
 @Composable
-fun AlimentosScreen(alimentosViewModel: AlimentosViewModel) {
-    val alimentos = alimentosViewModel.alimentos.value
+fun AlimentosIngeridosScreen(alimentosIngeridosViewModel: AlimentosIngeridosViewModel) {
+    val alimentos by rememberUpdatedState(newValue = alimentosIngeridosViewModel.alimentosIngeridos.value)
+    val openAlertDialog = remember { mutableStateOf(false) }
+    val idItemSelected = remember { mutableIntStateOf(0) }
+    val deleteAlimentos = DeleteAlimentoIngerido()
+    val execDelete = remember { mutableStateOf(false) }
+
+
 
     LaunchedEffect(true) {
-        alimentosViewModel.carregarAlimentos()
+        alimentosIngeridosViewModel.carregarAlimentosIngeridos()
     }
 
+    if (execDelete.value) {
+        LaunchedEffect(true) {
+            deleteAlimentos.deleteItem(parseInt(idItemSelected.value.toString()))
+            alimentosIngeridosViewModel.carregarAlimentosIngeridos()
+            execDelete.value = false
+            //popup
+        }
+    }
+
+
+
+
+
+
+    when {
+        openAlertDialog.value -> {
+            AlertDialogExample(
+                onDismissRequest = { openAlertDialog.value = false },
+                onConfirmation = {
+                    execDelete.value = true
+                    openAlertDialog.value = false
+
+                },
+                dialogTitle = "${execDelete.value} - Retirar alimento ingerido #${idItemSelected.value}",
+                dialogText = "Você deseja retirar o alimento ingerido?",
+                dismissOn = true
+
+            )
+        }
+    }
+
+
+
+
+
+
+
+
+
+
     // Verifica se os alimentos foram carregados
-    if (alimentos == null || alimentos.isEmpty()) {
-        // Exibe um indicador de carregamento ou uma mensagem de erro, conforme necessário
-        // Exemplo de indicador de carregamento:
-        // CircularProgressIndicator(modifier = Modifier.fillMaxSize().padding(16.dp))
-        // Ou mensagem de erro:
-        // Text(text = "Erro ao carregar alimentos", modifier = Modifier.padding(16.dp))
+    if (alimentos.isEmpty()) {
+
+
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .fillMaxHeight() // Ocupa toda a altura disponível
+                .padding(16.dp), // Adiciona algum espaçamento, se desejado
+            verticalArrangement = Arrangement.Center, // Alinha os elementos verticalmente no centro
+            horizontalAlignment = Alignment.CenterHorizontally // Alinha os elementos horizontalmente no centro
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.plate),
+                contentDescription = null,
+                modifier = Modifier.size(100.dp)
+            )
+            Text(text = "Seu prato está vazio...", color = Color.Gray)
+        }
+
+
+
     } else {
+
         // Renderiza a lista de alimentos
         LazyColumn {
-            items(alimentos) { alimento ->
-                Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.fillMaxWidth().padding(10.dp)
-                ) {
-                    Text(
-                        text = "${alimento.alimento}",
-                        modifier = Modifier.weight(1f).padding(end = 8.dp),
 
-                    )
-                    Text(
-                        text = "${alimento.calorias} kcal",
-                        textAlign = TextAlign.Start,
-                        style = TextStyle(textAlign = TextAlign.Start) // Alinha o texto à esquerda
-                    )
+
+            items(alimentos) { alimento ->
+                Card(
+                    shape = RoundedCornerShape(20.dp), // Define cantos arredondados com um raio de 8dp
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color(0xFF141414),
+                    ),
+
+
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp)
+
+                ) {
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp) // Espaçamento interno dentro do Card
+                    ) {
+                        Column {
+                            Text(
+                                text = "${alimento.alimento}",
+                                color = Color.White, // Cor do texto definida pelo tema
+                                fontWeight = FontWeight.Bold, // Texto em negrito
+                                fontSize = 18.sp, // Tamanho da fonte
+                            )
+                            Text(
+                                text = "${alimento.calorias} kcal",
+                                color = MaterialTheme.colorScheme.tertiary, // Cor do texto definida pelo tema
+                                fontSize = 14.sp, // Tamanho da fonte
+                            )
+                        }
+
+                        IconButton(
+                            onClick = {
+                                // Lógica para remover o item associado ao ícone
+
+                                openAlertDialog.value = true
+                                idItemSelected.value = alimento.id
+
+
+                            }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Delete, // Ícone de remoção padrão do Material Design
+                                contentDescription = null, // Descrição de conteúdo nula para fins de acessibilidade
+                                tint = Color.Red // Cor do ícone definida pelo tema
+                            )
+                        }
+                    }
                 }
-               
-               // Divider(color = Color.Gray, thickness = 0.5.dp, modifier = Modifier.padding(vertical = 2.dp))
+
+
             }
         }
     }
 }
+
+
 
 
 
