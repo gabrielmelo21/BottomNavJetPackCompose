@@ -1,5 +1,6 @@
 package com.melo.bottomnavjetpackcompose.api.ViewModels
 
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -10,14 +11,13 @@ import kotlinx.coroutines.withContext
 
 class AddAlimentosClass : ViewModel(){
     private val apiService = ApiService()
-    val success: MutableState<Boolean> = mutableStateOf(false)
+
     suspend fun addAlimentos(alimentos: Alimentos){
          return withContext(Dispatchers.IO){
            try {
                apiService.addAlimentos(alimentos)
-               success.value = true
            }catch (e: Exception){
-                success.value = false
+              Log.e("addAlimentos", "${e.message}")
            }
 
 

@@ -55,7 +55,7 @@ fun AddAlimentos(){
     val execOperation = remember { mutableStateOf(false) }
     val openAlertDialog = remember { mutableStateOf(false) }
     val addAlimentosViewModel = AddAlimentosClass()
-    val successInOperation = remember { mutableStateOf(addAlimentosViewModel.success.value) }
+
 
 
 
@@ -71,20 +71,19 @@ fun AddAlimentos(){
     }
 
 
-        when {
-            openAlertDialog.value -> {
-                AlertDialogExample(
-                    onDismissRequest = { openAlertDialog.value = false },
-                    onConfirmation = {
-                        openAlertDialog.value = false
-                    },
-                    dialogTitle = "Sucesso!",
-                    dialogText = "Sucesso ao Adicionar o Alimento",
-                    dismissOn = false
+    if (openAlertDialog.value) {
+        AlertDialogExample(
+            onDismissRequest = { openAlertDialog.value = false },
+            onConfirmation = {
+                openAlertDialog.value = false
+            },
+            dialogTitle = "Sucesso!",
+            dialogText = "Sucesso ao Adicionar o Alimento",
+            dismissOn = false,
+            alertType = "Success"
 
-                    )
-            }
-        }
+        )
+    }
 
 
 

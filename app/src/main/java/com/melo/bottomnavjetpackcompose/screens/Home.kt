@@ -23,6 +23,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
@@ -48,6 +49,7 @@ import com.melo.bottomnavjetpackcompose.api.ViewModels.AlimentosIngeridosViewMod
 import com.melo.bottomnavjetpackcompose.api.ViewModels.CaloriasViewModel
 import com.melo.bottomnavjetpackcompose.api.ViewModels.DeleteAlimentoIngerido
 import com.melo.bottomnavjetpackcompose.screens.Dialogs.AlertDialogExample
+import com.melo.bottomnavjetpackcompose.screens.Utils.Divisor
 import java.lang.Integer.parseInt
 
 
@@ -238,9 +240,7 @@ fun CardAlimentosIngeridos(alimentosViewModel: AlimentosIngeridosViewModel){
 
 
 
-            Divider(color = Color(0xFF141414), modifier = Modifier
-                .fillMaxWidth()
-                .height(1.dp))
+            Divisor()
            
          AlimentosIngeridosScreen(alimentosIngeridosViewModel = alimentosViewModel)
 
@@ -255,6 +255,7 @@ fun CardAlimentosIngeridos(alimentosViewModel: AlimentosIngeridosViewModel){
 
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AlimentosIngeridosScreen(alimentosIngeridosViewModel: AlimentosIngeridosViewModel) {
     val alimentos by rememberUpdatedState(newValue = alimentosIngeridosViewModel.alimentosIngeridos.value)
@@ -281,23 +282,20 @@ fun AlimentosIngeridosScreen(alimentosIngeridosViewModel: AlimentosIngeridosView
 
 
 
+    if (openAlertDialog.value) {
+        AlertDialogExample(
+            onDismissRequest = { openAlertDialog.value = false },
+            onConfirmation = {
+                execDelete.value = true
+                openAlertDialog.value = false
 
+            },
+            dialogTitle = "${execDelete.value} - Retirar alimento ingerido #${idItemSelected.value}",
+            dialogText = "Você deseja retirar o alimento ingerido?",
+            dismissOn = true,
+            alertType = "Default"
 
-    when {
-        openAlertDialog.value -> {
-            AlertDialogExample(
-                onDismissRequest = { openAlertDialog.value = false },
-                onConfirmation = {
-                    execDelete.value = true
-                    openAlertDialog.value = false
-
-                },
-                dialogTitle = "${execDelete.value} - Retirar alimento ingerido #${idItemSelected.value}",
-                dialogText = "Você deseja retirar o alimento ingerido?",
-                dismissOn = true
-
-            )
-        }
+        )
     }
 
 

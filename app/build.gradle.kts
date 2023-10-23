@@ -51,7 +51,7 @@ android {
 
 dependencies {
     implementation("com.google.android.gms:play-services-wallet:19.2.1")
-    val navVersion = "2.7.3"
+    val navVersion = "2.7.4"
     implementation("androidx.navigation:navigation-compose:$navVersion")
     val retrofitVersion = "2.9.0"
     implementation ("com.squareup.retrofit2:retrofit:$retrofitVersion")
@@ -60,19 +60,22 @@ dependencies {
     implementation ("com.squareup.okhttp3:logging-interceptor:4.11.0")
 
 
-    implementation ("androidx.compose.ui:ui:1.5.3")
-    implementation ("androidx.compose.material:material:1.5.3")
+    implementation ("androidx.compose.ui:ui:1.5.4")
+    implementation ("androidx.compose.material:material:1.5.4")
+    implementation ("androidx.compose.material3:material3:1.1.2")
+    implementation("androidx.compose.material3:material3-window-size-class:1.1.2")
+
     implementation ("androidx.activity:activity-compose:1.8.0")
 
-    implementation ("androidx.compose.runtime:runtime-livedata:1.5.3")
+    implementation ("androidx.compose.runtime:runtime-livedata:1.5.4")
     implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
-    implementation ("androidx.compose.runtime:runtime:1.5.3")
+    implementation ("androidx.compose.runtime:runtime:1.5.4")
 
-    implementation("androidx.compose.runtime:runtime-livedata:1.5.3")
-    implementation("androidx.compose.runtime:runtime:1.5.3")
+    implementation("androidx.compose.runtime:runtime-livedata:1.5.4")
+    implementation("androidx.compose.runtime:runtime:1.5.4")
 
 
-    implementation("androidx.compose.runtime:runtime-livedata:1.5.3")
+    implementation("androidx.compose.runtime:runtime-livedata:1.5.4")
 
 
 

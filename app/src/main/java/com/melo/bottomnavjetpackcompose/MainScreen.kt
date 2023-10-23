@@ -65,6 +65,10 @@ fun MainScreen(){
         "AddAlimentos" -> {
             titleText= "Adicionar novo alimento"
         }
+        "AddAlimentosIngeridos" -> {
+            titleText= "Oque você Ingeriu?"
+        }
+
         else -> {
             // Rota desconhecida, tratamento de erro se necessário
         }
