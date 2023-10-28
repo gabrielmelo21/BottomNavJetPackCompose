@@ -25,8 +25,8 @@ class CaloriasViewModel : ViewModel() {
                 for (cal in dadosRecebidos) {
                     caloriasAtual.value = cal.calorias_atual
                     tmb.value = cal.tmb
-                    deficitCalorico.value = cal.deficit_calorico
-                    dataDia.value = cal.data_dia
+                    deficitCalorico.value = cal.deficit_calorico!!
+                    dataDia.value = cal.data_dia.toString()
 
                     // Log dos valores (opcional)
                     Log.d(

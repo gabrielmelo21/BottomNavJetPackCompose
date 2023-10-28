@@ -1,6 +1,7 @@
 package com.melo.bottomnavjetpackcompose
 
 import android.annotation.SuppressLint
+import android.graphics.drawable.Icon
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.BottomNavigation
@@ -12,6 +13,8 @@ import androidx.compose.material.LocalContentColor
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -38,6 +41,7 @@ import com.melo.bottomnavjetpackcompose.bars.BottomBar
 import com.melo.bottomnavjetpackcompose.bars.BottomNavGraph
 
 
+
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -48,29 +52,53 @@ fun MainScreen(){
     var titleText = ""
     var floatActionRoute = ""
 
+    var buttonRightTopAppBar = BottomBar.AddAlimentos.route
+    var btnRightIcon: ImageVector = Icons.Default.Add
+
     when (rotaAtual) {
         "home" -> {
             floatActionRoute  = BottomBar.AddAlimentosIngeridos.route
             titleText = "Home"
+
+            buttonRightTopAppBar = BottomBar.AddAlimentos.route
+            btnRightIcon = Icons.Default.Add
+
 
         }
         "peso" -> {
             floatActionRoute  = BottomBar.UpdatePeso.route
             titleText = "Peso"
 
+
         }
         "deficit" -> {
             titleText = "Deficit"
+
         }
         "AddAlimentos" -> {
-            titleText= "Adicionar novo alimento"
+            titleText= "Adicionar alimentos mais ingeridos"
+
+            buttonRightTopAppBar = BottomBar.DeleteAlimentos.route
+            btnRightIcon = Icons.Default.Delete
         }
+
+        "DeleteAlimentos" -> {
+            titleText= "Deletar Alimentos "
+
+            buttonRightTopAppBar = BottomBar.AddAlimentos.route
+            btnRightIcon = Icons.Default.ArrowBack
+
+
+        }
+
+
         "AddAlimentosIngeridos" -> {
             titleText= "Oque você Ingeriu?"
+
         }
 
         else -> {
-            // Rota desconhecida, tratamento de erro se necessário
+
         }
     }
 
@@ -96,14 +124,16 @@ fun MainScreen(){
                  Text(titleText, color = Color(0xFF0066ff))
              },
 
+
+
              actions = {
                  IconButton(
                      onClick = {
-                         navController.navigate(BottomBar.AddAlimentos.route)
+                         navController.navigate(  buttonRightTopAppBar )
 
                      }
                  ) {
-                     Icon(imageVector = Icons.Default.Add, contentDescription = null)
+                     Icon(imageVector = btnRightIcon, contentDescription = null)
                  }
              }
 

@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import com.melo.bottomnavjetpackcompose.screens.AddAlimentos
 import com.melo.bottomnavjetpackcompose.screens.AddAlimentosIngeridos
 import com.melo.bottomnavjetpackcompose.screens.Deficit
+import com.melo.bottomnavjetpackcompose.screens.DeleteAlimentos
 import com.melo.bottomnavjetpackcompose.screens.Home
 import com.melo.bottomnavjetpackcompose.screens.Peso
 import com.melo.bottomnavjetpackcompose.screens.UpdatePeso
@@ -32,6 +33,9 @@ NavHost(
 
     composable(route = BottomBar.AddAlimentosIngeridos.route){
         AddAlimentosIngeridos()
+    }
+    composable(route = BottomBar.DeleteAlimentos.route){
+        DeleteAlimentos()
     }
 
     composable(route = BottomBar.UpdatePeso.route){

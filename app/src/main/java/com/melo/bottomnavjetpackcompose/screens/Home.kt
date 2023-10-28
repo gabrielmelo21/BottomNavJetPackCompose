@@ -1,7 +1,9 @@
 package com.melo.bottomnavjetpackcompose.screens
 
+import android.app.Dialog
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -48,6 +50,8 @@ import com.melo.bottomnavjetpackcompose.R
 import com.melo.bottomnavjetpackcompose.api.ViewModels.AlimentosIngeridosViewModel
 import com.melo.bottomnavjetpackcompose.api.ViewModels.CaloriasViewModel
 import com.melo.bottomnavjetpackcompose.api.ViewModels.DeleteAlimentoIngerido
+import com.melo.bottomnavjetpackcompose.api.ViewModels.UpdateCalorias
+import com.melo.bottomnavjetpackcompose.api.dataClasses.Calorias
 import com.melo.bottomnavjetpackcompose.screens.Dialogs.AlertDialogExample
 import com.melo.bottomnavjetpackcompose.screens.Utils.Divisor
 import java.lang.Integer.parseInt
@@ -133,6 +137,7 @@ fun CardCaloriasDiarias() {
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CaloriasScreen(caloriasViewModel: CaloriasViewModel){
 
@@ -155,11 +160,47 @@ fun CaloriasScreen(caloriasViewModel: CaloriasViewModel){
 
 
 
+    val openAlertDialogReset = remember { mutableStateOf(false) }
+    val execReset = remember { mutableStateOf(false) }
+    val UpdateCalorias = UpdateCalorias()
+
+
+ if (execReset.value){
+     LaunchedEffect(key1 = true){
+         val Calorias = Calorias(202, 0,0,0,"")
+         UpdateCalorias.updateCalorias(Calorias)
+         caloriasViewModel.carregarDados()
+     }
+ }
+
+
+    if (openAlertDialogReset.value) {
+        AlertDialogExample(
+            onDismissRequest = { openAlertDialogReset.value = false },
+            onConfirmation = {
+                execReset.value = true
+                openAlertDialogReset.value = false
+
+            },
+            dialogTitle = "Resetar Calorias consumidas?",
+            dialogText = "Você deseja resetar as calorias consumidas?",
+            dismissOn = true,
+            alertType = "Default"
+
+        )
+    }
+
+
+
     Text(
         text = "${caloriasState.value} / ${tmbState.value}",
         color = Color.White,
         style = MaterialTheme.typography.titleLarge,
-        modifier = Modifier.padding(top = 0.dp)
+        modifier = Modifier
+            .padding(top = 0.dp)
+            .clickable {
+                openAlertDialogReset.value = true
+            }
     )
     Text(
         text = "${porcentagemFormatada}%",
@@ -241,8 +282,8 @@ fun CardAlimentosIngeridos(alimentosViewModel: AlimentosIngeridosViewModel){
 
 
             Divisor()
-           
-         AlimentosIngeridosScreen(alimentosIngeridosViewModel = alimentosViewModel)
+
+            AlimentosIngeridosScreen(alimentosIngeridosViewModel = alimentosViewModel)
 
 
 
@@ -266,6 +307,7 @@ fun AlimentosIngeridosScreen(alimentosIngeridosViewModel: AlimentosIngeridosView
 
 
 
+
     LaunchedEffect(true) {
         alimentosIngeridosViewModel.carregarAlimentosIngeridos()
     }
@@ -275,6 +317,7 @@ fun AlimentosIngeridosScreen(alimentosIngeridosViewModel: AlimentosIngeridosView
             deleteAlimentos.deleteItem(parseInt(idItemSelected.value.toString()))
             alimentosIngeridosViewModel.carregarAlimentosIngeridos()
             execDelete.value = false
+
             //popup
         }
     }
@@ -290,9 +333,9 @@ fun AlimentosIngeridosScreen(alimentosIngeridosViewModel: AlimentosIngeridosView
                 openAlertDialog.value = false
 
             },
-            dialogTitle = "${execDelete.value} - Retirar alimento ingerido #${idItemSelected.value}",
+            dialogTitle = "Retirar alimento ingerido #${idItemSelected.value}",
             dialogText = "Você deseja retirar o alimento ingerido?",
-            dismissOn = true,
+            dismissOn = false,
             alertType = "Default"
 
         )

@@ -92,6 +92,28 @@ class ApiService {
         }
     }
 
+    suspend fun deletarAlimento(id: Int): Boolean {
+        return try {
+            api.deletarAlimento(id)
+            true // Exclusão bem-sucedida
+        } catch (e: Exception) {
+            // Handle errors here
+            Log.e("ApiService", "Error: ${e.message}")
+            false // Exclusão falhou
+        }
+    }
+
+    suspend fun updateCaloria(calorias: Calorias): Boolean{
+        return try {
+            api.updateCalorias(calorias)
+            true
+        } catch (e: Exception) {
+            Log.e("ApiService", "Error: ${e.message}")
+            false
+        }
+    }
+
+
 
     suspend fun addAlimentos(alimentos: Alimentos): Boolean {
         return try {
@@ -101,6 +123,16 @@ class ApiService {
                 Log.e("ApiService", "Error: ${e.message}" )
                false
             }
+
+    }
+    suspend fun addAlimentosIngeridos(alimentosIngeridos: AlimentosIngeridos): Boolean {
+        return try {
+            api.adicionarAlimentosIngerido(alimentosIngeridos)
+            true
+        } catch (e: Exception){
+            Log.e("ApiService", "Error: ${e.message}" )
+            false
+        }
 
     }
 

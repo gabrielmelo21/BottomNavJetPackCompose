@@ -10,11 +10,15 @@ import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface API_CALLS {
     @POST("addAlimentos")
     suspend fun adicionarAlimento(@Body alimento: Alimentos): Response<Alimentos>
+
+    @POST("addAlimentosIngeridos")
+    suspend fun adicionarAlimentosIngerido(@Body alimentosIngeridos: AlimentosIngeridos): Response<AlimentosIngeridos>
 
     @GET("alimentos")
     fun getAlimentos(): Call<List<Alimentos>>
@@ -27,5 +31,11 @@ interface API_CALLS {
 
     @DELETE("deletarAlimentosIngeridos/{id}")
     suspend fun deletarAlimentoIngerido(@Path("id") id: Int)
+
+    @DELETE("deletarAlimento/{id}")
+    suspend fun deletarAlimento(@Path("id") id: Int)
+
+   @PUT("updateCalorias/202")
+   suspend fun updateCalorias(@Body calorias: Calorias): Response<Calorias>
 
 }

@@ -41,6 +41,11 @@ sealed class BottomBar(
         icon = Icons.Default.Person
     )
 
+    object DeleteAlimentos: BottomBar(
+        route = "DeleteAlimentos",
+        title = "",
+        icon = Icons.Default.Person
+    )
 
     object UpdatePeso: BottomBar(
         route = "UpdatePeso",

@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="bottomnavjetpackcompose" type="JetRunConfigurationType" singleton="false" nameIsGenerated="true">
+    <module name="BottomNavJetPackCompose.app.main" />
+    <shortenClasspath name="NONE" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

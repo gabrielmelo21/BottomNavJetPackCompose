@@ -54,7 +54,7 @@ fun AlertDialogExample(
 
     val dialogColors =   when(alertType){
        "Default" -> {
-         DialogColors(txt = Color.White,bg = Color(0xFF4CAF50), btn = Color(0xFF388E3C))
+         DialogColors(txt = Color.White,bg = Color(0xFF323333), btn = Color(0xFFFFFFFF))
        }
        "Success" -> {
          DialogColors(txt = Color.White,bg = Color(0xFF4CAF50), btn = Color(0xFF388E3C))
@@ -64,12 +64,12 @@ fun AlertDialogExample(
             }
         }
 
-
+/**
     val buttonColors = ButtonDefaults.buttonColors(
         backgroundColor = dialogColors.btn, // Cor de fundo do botão
         contentColor = Color.White // Cor do texto do botão
     )
-
+**/
 
 Dialog(onDismissRequest = { onDismissRequest() }) {
     Surface(
@@ -132,45 +132,40 @@ Dialog(onDismissRequest = { onDismissRequest() }) {
 
                     }
 
-                    if(dismissOn == true){ //apenas 2 botão
-                        Row(){
-
-
-                            Button(onClick = {
+                if (dismissOn == true) {
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Button(
+                            onClick = {
                                 onDismissRequest()
                             },
-                                shape = RoundedCornerShape(50.dp),
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(50.dp)
+                            shape = RoundedCornerShape(50.dp),
+                            modifier = Modifier
+                                .height(50.dp)
+                                .weight(1f)
+                                .padding(5.dp),
 
-                            ) {
-
-                                Text(text = "Fechar")
-                            }
-
-
-
-                            Button(onClick = {
-                                onConfirmation()
-                            },
-                                shape = RoundedCornerShape(50.dp),
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(50.dp)
-                                ,
-                                colors = buttonColors
-
-
-
-
-                            ) {
-
-                                Text(text = "Confirmar")
-                            }
+                        ) {
+                            Text(text = "Fechar")
                         }
 
+                        Button(
+                            onClick = {
+                                onConfirmation()
+                            },
+                            shape = RoundedCornerShape(50.dp),
+                            modifier = Modifier
+                                .height(50.dp)
+                                .weight(1f)
+                                .padding(5.dp),
+
+                        ) {
+                            Text(text = "Confirmar")
+                        }
                     }
+                }
 
 
 

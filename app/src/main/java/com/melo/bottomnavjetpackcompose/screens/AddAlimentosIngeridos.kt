@@ -19,8 +19,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,6 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.melo.bottomnavjetpackcompose.api.ViewModels.AlimentosViewModel
+import com.melo.bottomnavjetpackcompose.api.ViewModels.CaloriasViewModel
 import com.melo.bottomnavjetpackcompose.api.dataClasses.Alimentos
 import com.melo.bottomnavjetpackcompose.screens.Dialogs.AddAlimentoIngeridoDialog
 import com.melo.bottomnavjetpackcompose.screens.Utils.Divisor
@@ -35,11 +38,18 @@ import com.melo.bottomnavjetpackcompose.screens.Utils.Divisor
 @Composable
 fun AddAlimentosIngeridos(){
     val alimentosViewModel: AlimentosViewModel = viewModel()
+    val caloriasViewModel: CaloriasViewModel = viewModel()
+
+
+    // pegando dados de alimentos
     val alimentos: List<Alimentos> = alimentosViewModel.alimentos.value
     val nomeAlimento = remember { mutableStateOf("") }
     val kcalAlimento = remember { mutableStateOf(0) }
     val idAlimento = remember { mutableStateOf("") }
     val openAlertDialog = remember { mutableStateOf(false) }
+
+
+     //observable do Dialog e pegar ele aqui
 
 
     if (openAlertDialog.value) {
@@ -49,11 +59,12 @@ fun AddAlimentosIngeridos(){
             AlimentoId = idAlimento.value,
             Alimento = nomeAlimento.value,
             Kcal = kcalAlimento.value,
-            Quant = 1
+            caloriasViewModel = caloriasViewModel
         )
     }
 
     LaunchedEffect(true) {
+        caloriasViewModel.carregarDados()
         alimentosViewModel.carregarAlimentos()
     }
     Box(
