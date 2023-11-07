@@ -98,7 +98,7 @@ fun CardCaloriasDiarias() {
         modifier = Modifier
             .padding(top = 56.dp)
             .fillMaxWidth()
-            .height(250.dp),
+            .height(315.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primary,
         ),
@@ -146,6 +146,7 @@ fun CaloriasScreen(caloriasViewModel: CaloriasViewModel){
 
     val caloriasState by rememberUpdatedState(caloriasViewModel.caloriasAtual)
     val tmbState by rememberUpdatedState(caloriasViewModel.tmb)
+    val deficitCaloricoState by rememberUpdatedState(caloriasViewModel.deficitCalorico)
 
     val calorias: Float = caloriasState.value.toFloat() ?: 0f
     val tmb: Float = tmbState.value.toFloat() ?: 1f // Definindo tmb como 1 se a conversão falhar para evitar a divisão por zero
@@ -153,6 +154,7 @@ fun CaloriasScreen(caloriasViewModel: CaloriasViewModel){
     val porcentagem: Float = (calorias / tmb) * 100
     val porcentagemFormatada: String = String.format("%.2f", porcentagem)
 
+    val deficit = calorias - tmb;
 
     LaunchedEffect(true) {
         caloriasViewModel.carregarDados()
@@ -193,7 +195,7 @@ fun CaloriasScreen(caloriasViewModel: CaloriasViewModel){
 
 
     Text(
-        text = "${caloriasState.value} / ${tmbState.value}",
+        text = "${caloriasState.value} Kcal / ${tmbState.value} Kcal",
         color = Color.White,
         style = MaterialTheme.typography.titleLarge,
         modifier = Modifier
@@ -214,6 +216,56 @@ fun CaloriasScreen(caloriasViewModel: CaloriasViewModel){
     ProgressBar(progress = porcentagem.toInt())
 
 
+    val labelSignal: String
+    val labelDeficitCalorico: String
+    val labelColor: Color
+
+
+        if (calorias<=2500){
+            labelDeficitCalorico = "Emagreceu:"
+            labelColor = Color.Green
+            labelSignal = ""
+        } else{
+            labelDeficitCalorico = "Engordou:"
+            labelColor = Color.Red
+            labelSignal = "+"
+        }
+
+    Card(
+        shape = RoundedCornerShape(20.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color(0xFF141414),
+        ),
+
+
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(10.dp)
+
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp) // Espaçamento interno dentro do Card
+        ) {
+            Text(
+                text = labelDeficitCalorico,
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                fontSize = 14.sp,
+                )
+            Text(
+                text = "$labelSignal${deficit} Kcal",
+                color = labelColor,
+                fontWeight = FontWeight.Bold,
+                fontSize = 14.sp,
+            )
+
+
+
+        }
+    }
 
 }
 
@@ -381,7 +433,7 @@ fun AlimentosIngeridosScreen(alimentosIngeridosViewModel: AlimentosIngeridosView
 
             items(alimentos) { alimento ->
                 Card(
-                    shape = RoundedCornerShape(20.dp), // Define cantos arredondados com um raio de 8dp
+                    shape = RoundedCornerShape(20.dp),
                     colors = CardDefaults.cardColors(
                         containerColor = Color(0xFF141414),
                     ),
@@ -400,7 +452,7 @@ fun AlimentosIngeridosScreen(alimentosIngeridosViewModel: AlimentosIngeridosView
                     ) {
                         Column {
                             Text(
-                                text = "${alimento.alimento}",
+                                text = alimento.alimento,
                                 color = Color.White, // Cor do texto definida pelo tema
                                 fontWeight = FontWeight.Bold, // Texto em negrito
                                 fontSize = 18.sp, // Tamanho da fonte

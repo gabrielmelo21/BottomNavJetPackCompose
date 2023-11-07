@@ -17,6 +17,7 @@ class AlimentosViewModel : ViewModel() {
         try {
             val alimentosRecebidos = apiService.getAlimentos()
             alimentos.value = alimentosRecebidos
+
         } catch (e: Exception) {
             // Handle errors here
             Log.e("AlimentosViewModel", "Error: ${e.message}")

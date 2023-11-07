@@ -143,7 +143,7 @@ fun AddAlimentoIngeridoDialog(
 
                         Text(
 
-                            text = "${caloriasState.value} + ${kcal.value} = $caloriasNew Adicionar Alimento Ingerido",
+                            text = "Adicionar Alimento Ingerido",
                             modifier = Modifier.padding(10.dp),
                             style = TextStyle(
                                 fontSize = 17.sp,

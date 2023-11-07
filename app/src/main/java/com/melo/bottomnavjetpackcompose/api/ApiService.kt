@@ -4,6 +4,8 @@ import android.util.Log
 import com.melo.bottomnavjetpackcompose.api.dataClasses.Alimentos
 import com.melo.bottomnavjetpackcompose.api.dataClasses.AlimentosIngeridos
 import com.melo.bottomnavjetpackcompose.api.dataClasses.Calorias
+import com.melo.bottomnavjetpackcompose.api.dataClasses.Peso
+import com.melo.bottomnavjetpackcompose.bars.BottomBar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
@@ -22,6 +24,7 @@ class ApiService {
         .addInterceptor(interceptor)
         .build()
 
+    // private val BASE_URL = "http://192.168.1.100:8081/api/"
     private val BASE_URL = "http://10.0.2.2:8081/api/"
     private val api: API_CALLS = Retrofit.Builder()
         .baseUrl(BASE_URL)
@@ -79,6 +82,22 @@ class ApiService {
             } as List<Calorias>
         }
     }
+
+
+    suspend fun getPeso(): List<Peso>{
+         return withContext(Dispatchers.IO){
+              try {
+                  val peso = api.getPeso().await()
+                  for (x in peso) {
+                      Log.d("Teste", x.peso.toString())
+                  }
+                 peso
+              }catch (e : Exception){
+                  Log.e("ApiService", "Error: ${e.message}")
+         }
+         } as List<Peso>
+    }
+
 
 
     suspend fun deletarAlimentoIngerido(id: Int): Boolean {

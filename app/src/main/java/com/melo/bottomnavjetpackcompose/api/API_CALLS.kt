@@ -4,6 +4,7 @@ package com.melo.bottomnavjetpackcompose.api
 import com.melo.bottomnavjetpackcompose.api.dataClasses.Alimentos
 import com.melo.bottomnavjetpackcompose.api.dataClasses.AlimentosIngeridos
 import com.melo.bottomnavjetpackcompose.api.dataClasses.Calorias
+import com.melo.bottomnavjetpackcompose.api.dataClasses.Peso
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
@@ -25,6 +26,9 @@ interface API_CALLS {
 
    @GET("calorias")
    fun getCalorias(): Call<List<Calorias>>
+
+    @GET("peso")
+    fun getPeso(): Call<List<Peso>>
 
    @GET("listarAlimentosIngeridos")
    fun getAlimentosIngeridos() : Call<List<AlimentosIngeridos>>

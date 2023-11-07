@@ -32,7 +32,6 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,7 +39,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
-import com.google.android.gms.wallet.button.ButtonConstants
 import com.melo.bottomnavjetpackcompose.api.ViewModels.AddAlimentosClass
 import com.melo.bottomnavjetpackcompose.api.dataClasses.Alimentos
 import com.melo.bottomnavjetpackcompose.screens.Dialogs.AlertDialogExample

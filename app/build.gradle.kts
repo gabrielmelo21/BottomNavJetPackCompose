@@ -50,7 +50,9 @@ android {
 }
 
 dependencies {
-    implementation("com.google.android.gms:play-services-wallet:19.2.1")
+
+
+
     val navVersion = "2.7.4"
     implementation("androidx.navigation:navigation-compose:$navVersion")
     val retrofitVersion = "2.9.0"
