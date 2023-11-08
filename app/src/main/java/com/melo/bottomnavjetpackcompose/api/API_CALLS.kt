@@ -21,6 +21,9 @@ interface API_CALLS {
     @POST("addAlimentosIngeridos")
     suspend fun adicionarAlimentosIngerido(@Body alimentosIngeridos: AlimentosIngeridos): Response<AlimentosIngeridos>
 
+    @POST("addPeso")
+    suspend fun addPeso(@Body peso: Peso): Response<Peso>
+
     @GET("alimentos")
     fun getAlimentos(): Call<List<Alimentos>>
 

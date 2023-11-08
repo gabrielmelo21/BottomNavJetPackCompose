@@ -171,8 +171,11 @@ fun BottomB(navController: NavHostController){
   val screens = listOf(
    BottomBar.Home,
    BottomBar.Peso,
-   BottomBar.Deficit
+
   )
+    //BottomBar.Deficit    - REMOVIDO
+
+
  val navBackStackEntry by navController.currentBackStackEntryAsState()
  val currentDestination = navBackStackEntry?.destination
     val mainColor =

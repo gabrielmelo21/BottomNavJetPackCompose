@@ -20,6 +20,7 @@ class PesoViewModel : ViewModel() {
     val pesoAtual: MutableState<Double> = mutableStateOf(0.00)
     val pesoObjetivo: MutableState<Double> = mutableStateOf(0.00)
     val dataDia: MutableState<String> = mutableStateOf("21/01")
+    val primeiroPeso: MutableState<Double> = mutableStateOf(0.00)
 
 
 
@@ -28,10 +29,10 @@ class PesoViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 pesoHistorico.value  = apiService.getPeso()
+                val primeiroPesoList = pesoHistorico.value.firstOrNull()
                 val ultimoPeso = pesoHistorico.value.lastOrNull()
 
                 if (ultimoPeso != null) {
-
                         dataDia.value = ultimoPeso.data_dia
                         pesoAtual.value = ultimoPeso.peso
                         pesoObjetivo.value = ultimoPeso.peso_objetivo
@@ -40,6 +41,10 @@ class PesoViewModel : ViewModel() {
                     Log.i( "now2","Último Peso - ID: ${ultimoPeso.id}, Peso: ${ultimoPeso.peso}, Peso Objetivo: ${ultimoPeso.peso_objetivo}, Data: ${ultimoPeso.data_dia}")
                 } else {
                     Log.i("now2" , "A lista de pesos está vazia.")
+                }
+
+                if (primeiroPesoList != null){
+                     primeiroPeso.value = primeiroPesoList.peso
                 }
 
                 Log.i("now", "Listado ${pesoHistorico.value}")

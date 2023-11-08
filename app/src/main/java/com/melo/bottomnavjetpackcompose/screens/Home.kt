@@ -54,6 +54,7 @@ import com.melo.bottomnavjetpackcompose.api.ViewModels.UpdateCalorias
 import com.melo.bottomnavjetpackcompose.api.dataClasses.Calorias
 import com.melo.bottomnavjetpackcompose.screens.Dialogs.AlertDialogExample
 import com.melo.bottomnavjetpackcompose.screens.Utils.Divisor
+import com.melo.bottomnavjetpackcompose.screens.Utils.Format
 import java.lang.Integer.parseInt
 
 
@@ -152,7 +153,8 @@ fun CaloriasScreen(caloriasViewModel: CaloriasViewModel){
     val tmb: Float = tmbState.value.toFloat() ?: 1f // Definindo tmb como 1 se a conversão falhar para evitar a divisão por zero
 
     val porcentagem: Float = (calorias / tmb) * 100
-    val porcentagemFormatada: String = String.format("%.2f", porcentagem)
+    val format = Format()
+    val porcentagemFormatada: String = format.format2(porcentagem.toString())
 
     val deficit = calorias - tmb;
 

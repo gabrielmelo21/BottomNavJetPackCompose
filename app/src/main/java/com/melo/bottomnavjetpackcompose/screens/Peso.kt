@@ -5,6 +5,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -27,27 +29,35 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.melo.bottomnavjetpackcompose.api.ViewModels.AlimentosViewModel
 import com.melo.bottomnavjetpackcompose.api.ViewModels.PesoViewModel
 import com.melo.bottomnavjetpackcompose.api.dataClasses.Peso
+import com.melo.bottomnavjetpackcompose.screens.Utils.Format
 
 
 @Composable
-fun Peso() {
+fun Peso(){
     val pesoViewModel: PesoViewModel = viewModel()
 
     val pesoAtualState by rememberUpdatedState(pesoViewModel.pesoAtual)
     val pesoObjetivoState by rememberUpdatedState(pesoViewModel.pesoObjetivo)
+    val pesoInicialState by rememberUpdatedState(pesoViewModel.primeiroPeso)
 
     LaunchedEffect(key1 = true ){
          pesoViewModel.carregarPeso()
     }
 
 
-    val pesoAtual: Float = pesoAtualState.value.toFloat() ?: 0f
-    val pesoObjetivo: Float = pesoObjetivoState.value.toFloat() ?: 1f // Definindo tmb como 1 se a conversão falhar para evitar a divisão por zero
+    val pesoAtual: Float = pesoAtualState.value.toFloat()
+    val pesoObjetivo: Float = pesoObjetivoState.value.toFloat()
+    val pesoInicial: Float = pesoInicialState.value.toFloat()
+
+    val format =  Format();
+    val pesoPerdido =  format.format2((pesoAtual - pesoInicial).toString())
+
 
     val porcentagem: Float = (pesoObjetivo/pesoAtual) * 100
     val porcentagemFormatada: String = String.format("%.2f", porcentagem)
@@ -73,7 +83,7 @@ fun Peso() {
             modifier = Modifier
                 .padding(top = 56.dp)
                 .fillMaxWidth()
-                .height(365.dp),
+                .height(325.dp),
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.primary,
             ),
@@ -106,42 +116,6 @@ fun Peso() {
                     modifier = paddingModifier,
                     style = MaterialTheme.typography.labelSmall
                 )
-
-
-                Text(
-                    text = "Peso Atual", modifier = Modifier
-                        .padding(vertical = 2.dp)
-                        .fillMaxWidth(),
-                    color = Color.White,
-                    style = MaterialTheme.typography.titleSmall
-                )
-                Text(
-                    text = "${pesoAtualState.value} kg",
-                    modifier = Modifier
-                        .padding(vertical = 8.dp)
-                        .fillMaxWidth(),
-                    color = Color.White,
-                    style = MaterialTheme.typography.titleMedium
-                )
-
-
-                Text(
-                    text = "Peso Objetivo", modifier = Modifier
-                        .padding(vertical = 2.dp)
-                        .fillMaxWidth(),
-                    color = Color.White,
-                    style = MaterialTheme.typography.titleSmall
-                )
-                Text(
-                    text = "${pesoObjetivoState.value} kg",
-                    modifier = Modifier
-                        .padding(vertical = 8.dp)
-                        .fillMaxWidth(),
-                    color = Color.White,
-                    style = MaterialTheme.typography.titleMedium
-                )
-
-
                 Text(
                     text = "${porcentagemFormatada}%",
                     color = Color.White,
@@ -150,6 +124,123 @@ fun Peso() {
                 )
 
                 Progress(progress = porcentagem.toInt())
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(6.dp)
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxHeight()
+                    ) {
+                        Text(
+                            text = "Peso Atual",
+                            modifier = Modifier
+                                .padding(vertical = 2.dp)
+                                .fillMaxWidth(),
+                            color = Color.White,
+                            style = MaterialTheme.typography.titleSmall,
+                            textAlign = TextAlign.Start
+                        )
+                        Text(
+                            text = "${pesoAtualState.value} kg",
+                            modifier = Modifier
+                                .padding(vertical = 8.dp)
+                                .fillMaxWidth(),
+                            color = Color.White,
+                            style = MaterialTheme.typography.titleMedium,
+                            textAlign = TextAlign.Start
+                        )
+
+                    }
+
+                    Column(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxHeight()
+                    ) {
+                        Text(
+                            text = "Peso Objetivo",
+                            modifier = Modifier
+                                .padding(vertical = 2.dp)
+                                .fillMaxWidth(),
+                            color = Color.White,
+                            style = MaterialTheme.typography.titleSmall,
+                            textAlign = TextAlign.Center
+                        )
+                        Text(
+                            text = "${pesoObjetivoState.value} kg",
+                            modifier = Modifier
+                                .padding(vertical = 8.dp)
+                                .fillMaxWidth(),
+                            color = Color.White,
+                            style = MaterialTheme.typography.titleMedium,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+
+
+
+
+
+
+                    Column(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxHeight()
+
+                    ) {
+                        Text(
+                            text = "Progresso", modifier = Modifier
+                                .padding(vertical = 2.dp)
+                                .fillMaxWidth(),
+                            color = Color.White,
+                            style = MaterialTheme.typography.titleSmall,
+                            textAlign = TextAlign.End
+                        )
+                        Text(
+                            text = "-${pesoPerdido} Kg",
+                            modifier = Modifier
+                                .padding(vertical = 8.dp)
+                                .fillMaxWidth(),
+                            color = Color.Green,
+                            style = MaterialTheme.typography.titleMedium,
+                            textAlign = TextAlign.End
+                        )
+                    }
+
+
+
+                }
+
+
+
 
 
             }

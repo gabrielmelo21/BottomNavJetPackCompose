@@ -155,7 +155,15 @@ class ApiService {
 
     }
 
-
+  suspend fun addPeso(peso: Peso): Boolean{
+       return try {
+           api.addPeso(peso)
+           true
+       }catch (e: Exception){
+           Log.e("ApiService", "Error: ${e.message}" )
+           false
+       }
+  }
 
 
 
