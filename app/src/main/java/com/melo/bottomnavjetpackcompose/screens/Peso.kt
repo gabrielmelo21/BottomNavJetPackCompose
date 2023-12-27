@@ -50,16 +50,16 @@ fun Peso(){
          pesoViewModel.carregarPeso()
     }
 
-
     val pesoAtual: Float = pesoAtualState.value.toFloat()
     val pesoObjetivo: Float = pesoObjetivoState.value.toFloat()
     val pesoInicial: Float = pesoInicialState.value.toFloat()
 
     val format =  Format();
-    val pesoPerdido =  format.format2((pesoAtual - pesoInicial).toString())
 
+    val pesoPerdido = format.format2((pesoAtual - pesoInicial).toString())
 
-    val porcentagem: Float = (pesoObjetivo/pesoAtual) * 100
+    val porcentagem: Float = (1 - Math.abs(pesoAtual - pesoObjetivo) / Math.abs(pesoInicial - pesoObjetivo)) * 100
+
     val porcentagemFormatada: String = String.format("%.2f", porcentagem)
 
 
@@ -225,7 +225,7 @@ fun Peso(){
                             textAlign = TextAlign.End
                         )
                         Text(
-                            text = "-${pesoPerdido} Kg",
+                            text = "${pesoPerdido} Kg",
                             modifier = Modifier
                                 .padding(vertical = 8.dp)
                                 .fillMaxWidth(),

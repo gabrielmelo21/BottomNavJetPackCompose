@@ -42,7 +42,13 @@ interface API_CALLS {
     @DELETE("deletarAlimento/{id}")
     suspend fun deletarAlimento(@Path("id") id: Int)
 
-   @PUT("updateCalorias/202")
+   @PUT("updateCalorias/1")
    suspend fun updateCalorias(@Body calorias: Calorias): Response<Calorias>
+
+
+    @POST("addPeso")
+    suspend fun updatePesoCall(@Body peso: Peso): Response<Peso>
+
+
 
 }

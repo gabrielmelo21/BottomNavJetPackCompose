@@ -25,7 +25,7 @@ class ApiService {
         .build()
 
     // private val BASE_URL = "http://192.168.1.100:8081/api/"
-    private val BASE_URL = "http://10.0.2.2:8081/api/"
+    private val BASE_URL = "http://10.0.2.2:8080/api/"
     private val api: API_CALLS = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .client(client)
@@ -132,7 +132,15 @@ class ApiService {
         }
     }
 
-
+    suspend fun updatePeso(peso: Peso): Boolean{
+        return try {
+            api.updatePesoCall(peso)
+            true
+        } catch (e: Exception) {
+            Log.e("ApiService", "Error: ${e.message}")
+            false
+        }
+    }
 
     suspend fun addAlimentos(alimentos: Alimentos): Boolean {
         return try {
